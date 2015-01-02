@@ -16,7 +16,7 @@ public class Dictionary {
      */
     public void filter(GridBoard board) {
         String boggleBoard = board.getLettersAsString();
-        List<String> newList = new ArrayList<String>(1000);
+        List<String> newList = new ArrayList<String>(2000);
         int wordsRemoved = 0;
         boolean remove;
         for (String s : dict) {

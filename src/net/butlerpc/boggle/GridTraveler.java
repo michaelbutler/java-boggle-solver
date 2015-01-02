@@ -1,16 +1,16 @@
 package net.butlerpc.boggle;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.Callable;
 
 public class GridTraveler implements Callable {
     public GridBoard board;
-    Map<String, Integer> foundWords;
-    int traverseCalls = 0;
-    Dictionary dict;
+    public int traverseCalls = 0;
 
     private int rowToOperateOn;
+    private Set<String> foundWords;
+    private Dictionary dict;
 
     public final int MIN_WORD_LENGTH = 3;
     public final char VISITED_CHAR = '0';
@@ -24,12 +24,12 @@ public class GridTraveler implements Callable {
         rowToOperateOn = i;
     }
 
-    public Map call() {
+    public Set call() {
         return findWords();
     }
 
-    public Map findWords() {
-        foundWords = new HashMap<String, Integer>(100, 100);
+    public Set findWords() {
+        foundWords = new TreeSet<String>();
         /**
          * For each square of the grid, run this pseudo code: (so for a 4x4 grid, run total 16 times).
          * Pseudo-code:
@@ -75,7 +75,7 @@ public class GridTraveler implements Callable {
         if (letterChain.length() >= MIN_WORD_LENGTH) {
             WordSearchResponse w = dict.search(letterChain);
             if (w.isWord) {
-                foundWords.put(letterChain, 1);
+                foundWords.add(letterChain);
             } else if (!w.isPrefix) {
                 // Stop traversing if we'll never find a match with the current chain
                 return;

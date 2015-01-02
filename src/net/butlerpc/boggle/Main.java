@@ -48,11 +48,11 @@ public class Main {
             futuresList.add(eService.submit(gt));
         }
 
-        Map<String, Integer> wordMap = new HashMap<String, Integer>(150);
+        Set<String> wordMap = new TreeSet<String>();
         for (Future future : futuresList) {
             try {
                 // get the word map chunk
-                wordMap.putAll((Map)future.get());
+                wordMap.addAll((Set)future.get());
             } catch (InterruptedException e) {
                 System.out.println("Interrupted process early.");
             } catch (ExecutionException e) {
@@ -65,7 +65,7 @@ public class Main {
 
         System.out.println(board);
         System.out.println("Found " + wordMap.size()  + " words");
-        for (String s : wordMap.keySet()) {
+        for (String s : wordMap) {
             System.out.print(s + " ");
         }
         System.out.println("");
