@@ -9,6 +9,11 @@ Supports parallel processing to search the boggle grid for words. Filters the di
 
 Other optimizations are possible, but it's pretty good for now.
 
+Example Usage:
+--------------
+
+    time java -classpath ./out/production/BoggleSolver net.butlerpc.boggle.Main dictionary.txt
+
 License
 ==================
 GPLv2
