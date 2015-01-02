@@ -1,15 +1,16 @@
 package net.butlerpc.boggle;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
-public class GridTraveler {
+public class GridTraveler implements Callable {
     public GridBoard board;
     Map<String, Integer> foundWords;
     int traverseCalls = 0;
     Dictionary dict;
+
+    private int rowToOperateOn;
 
     public final int MIN_WORD_LENGTH = 3;
     public final char VISITED_CHAR = '0';
@@ -19,10 +20,16 @@ public class GridTraveler {
         this.dict = dict;
     }
 
-    public List<String> findWords() {
-        foundWords = new HashMap<String, Integer>(100, 100);
-        List<String> uniqueWords;
+    public void setRowToOperateOn(int i) {
+        rowToOperateOn = i;
+    }
 
+    public Map call() {
+        return findWords();
+    }
+
+    public Map findWords() {
+        foundWords = new HashMap<String, Integer>(100, 100);
         /**
          * For each square of the grid, run this pseudo code: (so for a 4x4 grid, run total 16 times).
          * Pseudo-code:
@@ -30,16 +37,13 @@ public class GridTraveler {
          * 1. I'm on a square. Add me as a letter to the letter chain, add current letter chain to the wordList.
          * 2. For each adjacent untouched square, perform 1.
          */
-        for (int i = 0; i < board.size; i++) {
-            for (int j = 0; j < board.size; j++) {
-                GridBoard clonedBoard = board.getClone();
-                traverseBoard(clonedBoard, "", i, j);
-            }
+
+        for (int j = 0; j < board.size; j++) {
+            GridBoard clonedBoard = board.getClone();
+            traverseBoard(clonedBoard, "", rowToOperateOn, j);
         }
 
-        uniqueWords = new ArrayList<String>(foundWords.size());
-        uniqueWords.addAll(foundWords.keySet());
-        return uniqueWords;
+        return foundWords;
     }
 
     protected void traverseBoard(GridBoard grid, String letterChain, int x, int y) {
@@ -56,7 +60,14 @@ public class GridTraveler {
         }
 
         // Concat the current letter to the letter chain
-        letterChain = letterChain + grid.dice[x][y];
+        // Special case for 'Q'... change to QU
+        String touchedChar;
+        if (grid.dice[x][y] == 'Q') {
+            touchedChar = "QU";
+        } else {
+            touchedChar = "" + grid.dice[x][y];
+        }
+        letterChain = letterChain + touchedChar;
 
         // Mark as visited
         grid.dice[x][y] = VISITED_CHAR;

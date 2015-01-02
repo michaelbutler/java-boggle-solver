@@ -5,7 +5,7 @@ import java.util.List;
 
 public class GridBoard {
     public char[][] dice;
-    public int size = 4;
+    public int size;
 
     protected GridBoard(int size) {
         this.size = size;

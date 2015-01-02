@@ -16,20 +16,23 @@ public class Dictionary {
      */
     public void filter(GridBoard board) {
         String boggleBoard = board.getLettersAsString();
-        List<String> toRemove = new ArrayList<String>(100);
+        List<String> newList = new ArrayList<String>(1000);
         int wordsRemoved = 0;
+        boolean remove;
         for (String s : dict) {
+            remove = false;
             for (char l : s.toCharArray()) {
                 if (!boggleBoard.contains("" + l)) {
-                    toRemove.add(s);
+                    remove = true;
                     wordsRemoved++;
                     break;
                 }
             }
+            if (!remove) {
+                newList.add(s);
+            }
         }
-        for (String s : toRemove) {
-            dict.remove(s);
-        }
+        dict = newList;
         System.out.println("Removed " + wordsRemoved + " words from dictionary.");
     }
 

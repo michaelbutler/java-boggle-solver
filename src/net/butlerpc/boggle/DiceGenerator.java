@@ -62,9 +62,9 @@ public class DiceGenerator {
         String[] strings = getUpdatedPieceList();
         Random r = new Random();
         int j;
-        for (String s : strings) {
+        for (int i = 0; i < amount; i++) {
             j = r.nextInt(SIDES_ON_A_CUBE);
-            dieList.add(s.toCharArray()[j]);
+            dieList.add(strings[i % strings.length].toCharArray()[j]);
         }
         Collections.shuffle(dieList);
         return dieList;
