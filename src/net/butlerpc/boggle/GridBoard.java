@@ -4,6 +4,9 @@ import java.util.Arrays;
 import java.util.List;
 
 public class GridBoard {
+
+    public static final char VISITED_CHAR = '0';
+
     public char[][] dice;
     public int size;
 
@@ -41,6 +44,29 @@ public class GridBoard {
             }
         }
         return output;
+    }
+
+    public boolean isVisited(int x, int y) {
+        try {
+            return this.dice[x][y] == GridBoard.VISITED_CHAR;
+        } catch (IndexOutOfBoundsException e) {
+            return true;
+        }
+    }
+
+    public void markAsVisited(int x, int y) {
+        this.dice[x][y] = VISITED_CHAR;
+    }
+
+    /**
+     * Special case for 'Q'... actually means "QU"
+     */
+    public String getStringAt(int x, int y) {
+        char c = this.dice[x][y];
+        if (c == 'Q') {
+            return "QU";
+        }
+        return "" + c;
     }
 
     public String toString() {
