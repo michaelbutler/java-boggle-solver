@@ -15,9 +15,20 @@ public class GridBoard {
         dice = new char[size][size];
     }
 
+    public static GridBoard generateBoard(String[] rows) {
+        int size = rows[0].length();
+        GridBoard g = new GridBoard(size);
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                g.dice[i][j] = rows[i].trim().charAt(j);
+            }
+        }
+        return g;
+    }
+
     public static GridBoard getRandomBoggleBoard(int size) {
         GridBoard g = new GridBoard(size);
-        g.initializeBoard();
+        g.randomizeBoard();
         return g;
     }
 
@@ -86,7 +97,7 @@ public class GridBoard {
     /**
      * Gets a random list of dice and assigns them to the grid squares
      */
-    void initializeBoard() {
+    void randomizeBoard() {
         int i, j;
         List<Character> dieList = DiceGenerator.getRandomDice(size * size);
         for (i = 0; i < size; i++) {

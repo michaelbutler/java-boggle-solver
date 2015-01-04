@@ -22,26 +22,13 @@ public class Solver {
 
     public void run() {
         startTimer();
-        board = GridBoard.getRandomBoggleBoard(DEFAULT_BOARD_SIZE);
-        System.out.println("Built boggleBoard in " + endTimer() + "s");
-
-        startTimer();
         dict.filter(board);
-        System.out.println("Processed dictionary in " + endTimer() + "s");
-
-        List<Future> futuresList = new ArrayList<Future>();
-        int numProcessors = Runtime.getRuntime().availableProcessors();
-        if (!ENABLE_MULTI_PROCESSING) {
-            numProcessors = 1;
-        }
-        ExecutorService eService = Executors.newFixedThreadPool(numProcessors);
-
-        System.out.println("Num Processors: " + numProcessors);
-        System.out.println("");
+        System.out.println("Filtered dictionary words in " + endTimer() + "s");
 
         startTimer();
-        doParallelWordSearch(eService, futuresList);
-        System.out.println("Solved boggle words in " + endTimer() + "s");
+        List<Future> futuresList = doParallelWordSearch();
+        combineWords(futuresList);
+        System.out.println("Found all words in " + endTimer() + "s");
 
         System.out.println(board);
         System.out.println("Found " + wordMap.size()  + " words");
@@ -51,16 +38,40 @@ public class Solver {
         Solver.exit();
     }
 
-    private void doParallelWordSearch(ExecutorService eService, List<Future> futuresList) {
+    /**
+     * Submits tasks to an ExecutorService
+     */
+    private List<Future> doParallelWordSearch() {
+        ExecutorService eService = getExecutorService();
+        List<Future> futuresList = new ArrayList<Future>();
+
         // Chunk up the work of searching for words, row by row
         for (int i = 0; i < board.size; i++) {
             SearchTask gt = new SearchTask(board, dict);
             // This effectively sets the chunk on which to work,
             // In this case we're creating separate tasks for each row of the board.
+            // Probably the most effective way to split up the work would be to divide the board
+            //   by the number of available processors. If only 1 processor available, we should
+            //   ideally not split up the board at all.
             gt.setRowToOperateOn(i);
             futuresList.add(eService.submit(gt));
         }
 
+        return futuresList;
+    }
+
+    private ExecutorService getExecutorService() {
+        int numProcessors = Runtime.getRuntime().availableProcessors();
+        if (!ENABLE_MULTI_PROCESSING) {
+            numProcessors = 1;
+        }
+        ExecutorService eService = Executors.newFixedThreadPool(numProcessors);
+        System.out.println("Num Processors: " + numProcessors);
+        System.out.println("");
+        return eService;
+    }
+
+    private void combineWords(List<Future> futuresList) {
         wordMap = new TreeSet<String>();
         for (Future future : futuresList) {
             try {
@@ -84,8 +95,18 @@ public class Solver {
         startTimer = new java.util.Date().getTime();
     }
 
-    public void setBoggleBoard(String spaceSeparatedString) {
-        // @todo implement this
+    /**
+     * Given a string like "ABCD,EFGH,IJKL...." turn it into a boggle board
+     */
+    public void generateBoardFromString(String commaSeparatedString) {
+        String[] rows = commaSeparatedString.split(",");
+        board = GridBoard.generateBoard(rows);
+    }
+
+    public void generateRandomBoard() {
+        startTimer();
+        board = GridBoard.getRandomBoggleBoard(DEFAULT_BOARD_SIZE);
+        System.out.println("Built boggleBoard in " + endTimer() + "s");
     }
 
     public void loadDictionary(String path) {
@@ -93,8 +114,7 @@ public class Solver {
         try {
             sc = new Scanner(new File(path));
         } catch (FileNotFoundException e) {
-            System.out.println("Dictionary file not found or could not be opened.");
-            throw new RuntimeException("Catastrophic failure");
+            throw new IllegalArgumentException("Catastrophic failure: Dictionary file not found or could not be opened.");
         }
         List<String> lines = new ArrayList<String>(2048);
         while (sc.hasNextLine()) {

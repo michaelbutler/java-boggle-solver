@@ -35,7 +35,7 @@ public class Dictionary {
             }
         }
         dict = newList;
-        System.out.println("Removed " + wordsRemoved + " words from dictionary.");
+        System.out.println("Removed " + wordsRemoved + " words from dictionary. Remaining: " + dict.size());
     }
 
     /**

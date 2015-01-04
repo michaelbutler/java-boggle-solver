@@ -2,20 +2,20 @@ package net.butlerpc.boggle;
 
 public class Main {
 
+    public static final String DEFAULT_DICTIONARY = "dictionary.txt";
+
     public static void main(String[] args) {
-        validateArguments(args);
         Solver s = new Solver();
-        s.loadDictionary(args[0]);
         if (args.length >= 2) {
-            s.setBoggleBoard(args[1]);
+            s.loadDictionary(args[1]);
+        } else {
+            s.loadDictionary(DEFAULT_DICTIONARY);
+        }
+        if (args.length >= 1) {
+            s.generateBoardFromString(args[0]);
+        } else {
+            s.generateRandomBoard();
         }
         s.run();
-    }
-
-    private static void validateArguments(String[] args) {
-        if (args.length < 1) {
-            System.out.println("Must provide dictionary input file as argument 1.");
-            System.exit(0);
-        }
     }
 }
