@@ -4,7 +4,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.Callable;
 
-public class BoggleSearchTask implements Callable {
+public class SearchTask implements Callable {
 
     public final int MIN_WORD_LENGTH = 3;
 
@@ -16,7 +16,7 @@ public class BoggleSearchTask implements Callable {
     private Dictionary dict;
 
 
-    public BoggleSearchTask(GridBoard board, Dictionary dict) {
+    public SearchTask(GridBoard board, Dictionary dict) {
         this.board = board;
         this.dict = dict;
     }

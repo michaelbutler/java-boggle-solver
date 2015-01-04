@@ -54,7 +54,7 @@ public class Solver {
     private void doParallelWordSearch(ExecutorService eService, List<Future> futuresList) {
         // Chunk up the work of searching for words, row by row
         for (int i = 0; i < board.size; i++) {
-            BoggleSearchTask gt = new BoggleSearchTask(board, dict);
+            SearchTask gt = new SearchTask(board, dict);
             // This effectively sets the chunk on which to work,
             // In this case we're creating separate tasks for each row of the board.
             gt.setRowToOperateOn(i);
