@@ -11,8 +11,9 @@ Other optimizations are possible in the dictionary searching part, but it's pret
 
 Example Usage:
 --------------
-
-    java -classpath ./out/production/BoggleSolver net.butlerpc.boggle.Main EVNI,PBAE,IVEF,AUNL
+    javac -d . src/net/butlerpc/boggle/*.java
+    java -cp . net/butlerpc/boggle/Main EVNI,PBAE,IVEF,AUNL
+    java -cp . net/butlerpc/boggle/Main aedfs,dfhyi,midjh,cwert,gpurl /usr/share/dict/words
     
 Or use the including shell script helper to run it:
 
