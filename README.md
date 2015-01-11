@@ -34,6 +34,9 @@ Example Output:
     Found 109 words
     ACE AEON AIN ANE ANI AVA AVE AVENUE BAN BANE BANI BEAN BEANIE BEE BEEF BEEN BEFELL BEFLEA BEL BELL BELLS BELON BELS BEN BENE BIN BINE CAVE CEE CEIBA CLEAN CLEAVE CLEF CLON CLONE CUE CUVEE EAU EAVE ECU EEL EELS ELF ELL ELLS ELS ENOL ENOLS EON FAB FAIN FAN FANE FAVA FAVE FEE FEEB FEEL FEELS FELL FELLOE FELLS FELON FEN FEU FLEA FLEE FLOE LEA LEAF LEAN LEAVE LEE LENO LEU LEV LEVA LONE NAB NABE NAE NAEVI NAVE NAVEL NAVELS NEB NEE NEVI NIB OLE OLEA ONE PIA PIU SLEAVE SLOE UVEA VAC VACUOLE VAIN VAN VANE VAU VAV VEE VEENA VENUE VIA VIBE 
 
+Using Boggle Solver in your own project
+==================
+The Solver class is designed to be used in any project. Simply use the call the public methods to create a boggle board randomly (or provide the input characters) and then call loadDictionary(). Then call run(). 
 
 License
 ==================
