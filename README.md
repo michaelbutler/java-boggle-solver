@@ -7,23 +7,19 @@ It takes a boggle grid as input in the format EVNI,PBAE,IVEF,AUNL or generates a
 
 Supports parallel processing to split up the searching tasks. Filters the dictionary prior to searching by using the available letters on the boggle grid. The included dictionary is used as default, but you can provide the path to your own dictionary as a second command line argument. 
 
-Other optimizations are possible in the dictionary searching part, but it's pretty good for now.
-
 Example Usage:
 --------------
-    javac -d . src/net/butlerpc/boggle/*.java
-    java -cp . net/butlerpc/boggle/Main EVNI,PBAE,IVEF,AUNL
-    java -cp . net/butlerpc/boggle/Main aedfs,dfhyi,midjh,cwert,gpurl /usr/share/dict/words
-    
-Or use the including shell script helper to run it:
+Parameters:
+-d=/path/to/dictionary (Specify a dictionary to use)
+-b=EVNI,PBAE,IVEF,AUNL (Specify any input grid to solve)
+-s=5 (Specify the size of a grid to generate randomly and solve)
 
-    ./run.sh
-    ./run.sh EVNI,PBAE,IVEF,AUNL
-    ./run.sh EVNIA,PBAEB,IVEFC,AUNLJ,CEOLS
+    ./run.sh --s=5 --multi --d=/usr/share/dict/words
+    ./run.sh --multi -b=EVNI,PBAE,IVEF,AUNL
     
 Example Output:
 ---------------
-    ./run.sh EVNIA,PBAEB,IVEFC,AUNLJ,CEOLS
+    ./run.sh -b=EVNIA,PBAEB,IVEFC,AUNLJ,CEOLS
     Removed 171781 words from dictionary. Remaining: 6910
     Filtered dictionary words in 0.079s
     Num Processors: 4
