@@ -2,6 +2,8 @@ package net.butlerpc.boggle;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class GridBoard {
 
@@ -46,12 +48,12 @@ public class GridBoard {
         return clone;
     }
 
-    public String getLettersAsString() {
-        String output = "";
+    public Set<Character> getLettersAsSet() {
+        Set<Character> output = new TreeSet<>();
         int i, j;
         for (i = 0; i < size; i++) {
             for (j = 0; j < size; j++) {
-                output += dice[i][j];
+                output.add(dice[i][j]);
             }
         }
         return output;

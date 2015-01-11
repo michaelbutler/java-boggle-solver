@@ -6,8 +6,6 @@ import java.util.concurrent.Callable;
 
 public class SearchTask implements Callable {
 
-    public final int MIN_WORD_LENGTH = 3;
-
     public GridBoard board;
 
     private int traverseCalls = 0;
@@ -30,7 +28,7 @@ public class SearchTask implements Callable {
     }
 
     public Set findWords() {
-        foundWords = new TreeSet<String>();
+        foundWords = new TreeSet<>();
         /**
          * For each square of the grid, run this pseudo code:
          * 0. Start with empty word: ""
@@ -67,13 +65,14 @@ public class SearchTask implements Callable {
 
         clonedBoard.markAsVisited(x, y);
 
-        if (letterChain.length() >= MIN_WORD_LENGTH) {
+        if (letterChain.length() >= Dictionary.MIN_WORD_LENGTH) {
             WordSearchResponse w = dict.search(letterChain);
-            if (w.isWord) {
-                foundWords.add(letterChain);
-            } else if (!w.isPrefix) {
+            if (!w.isPrefix) {
                 // Stop traversing if we'll never find a match with the current chain
                 return;
+            }
+            if (w.isWord) {
+                foundWords.add(letterChain);
             }
         }
 

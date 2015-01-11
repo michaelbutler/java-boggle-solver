@@ -1,62 +1,78 @@
 package net.butlerpc.boggle;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 public class Dictionary {
 
-    List<String> dict;
+    public static final int MIN_WORD_LENGTH = 3;
 
-    public Dictionary(List<String> dict) {
-        this.dict = dict;
+    Map<String, Set<String>> dict;
+
+    public Dictionary() {
+        dict = new HashMap<>(3000);
     }
 
-    /**
-     * Filter out dictionary words that would be impossible to spell, given the current grid board
-     */
-    public void filter(GridBoard board) {
-        String boggleBoard = board.getLettersAsString();
-        List<String> newList = new ArrayList<String>(2000);
-        int wordsRemoved = 0;
-        boolean remove;
-        for (String s : dict) {
-            remove = false;
-            for (char l : s.toCharArray()) {
-                if (!boggleBoard.contains("" + l)) {
-                    remove = true;
-                    wordsRemoved++;
-                    break;
-                }
+    public void mapWords(Scanner sc, GridBoard board) {
+        String word, prefix;
+        Set<Character> boggleCharSet = board.getLettersAsSet();
+
+        while (sc.hasNextLine()) {
+            word = sc.nextLine().toUpperCase();
+
+            if (word.length() < MIN_WORD_LENGTH) {
+                continue;
             }
-            if (!remove) {
-                newList.add(s);
+
+            prefix = prefix(word);
+            if (!boggleCharSet.containsAll(chars(word))) {
+                continue;
             }
+            if (!dict.containsKey(prefix)) {
+                dict.put(prefix, new TreeSet<String>());
+            }
+            dict.get(prefix).add(word);
         }
-        dict = newList;
-        System.out.println("Removed " + wordsRemoved + " words from dictionary. Remaining: " + dict.size());
     }
 
-    /**
-     * @todo use a faster search mechanism
-     */
+    private Set<Character> chars(String word) {
+        Set<Character> set = new TreeSet<>();
+        for (char c : word.toCharArray()) {
+            set.add(c);
+        }
+        return set;
+    }
+
+    private String prefix(String word) {
+        return word.substring(0, MIN_WORD_LENGTH);
+    }
+
     public WordSearchResponse search(String word) {
         WordSearchResponse searchResponse = new WordSearchResponse(false, false);
-        for (String s : dict) {
-            if (s.equals(word)) {
-                searchResponse.isWord = true;
-                searchResponse.isPrefix = true;
-                break;
-            }
-            if (s.startsWith(word)) {
-                searchResponse.isPrefix = true;
-            }
-            // dict is alphabetized, so we can exit early if we pass over the letter that begins search word
-            if (s.charAt(0) > word.charAt(0)) {
-                break;
-            }
+        String prefix = prefix(word);
+        if (!dict.containsKey(prefix)) {
+            searchResponse.isPrefix = false;
+            searchResponse.isWord = false;
+            return searchResponse;
+        }
+        if (dict.get(prefix).contains(word)) {
+            searchResponse.isWord = true;
+            searchResponse.isPrefix = true;
+            return searchResponse;
+        }
+        if (word.length() > MIN_WORD_LENGTH) {
+           searchResponse.isPrefix = prefixExistsInList(dict.get(prefix), word);
+        } else {
+            searchResponse.isPrefix = true;
         }
         return searchResponse;
+    }
+
+    private boolean prefixExistsInList(Set<String> set, String prefix) {
+        for (String s : set) {
+            if (s.startsWith(prefix)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
