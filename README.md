@@ -10,10 +10,10 @@ Supports parallel processing to split up the searching tasks. Filters the dictio
 Example Usage:
 --------------
 Parameters:
--d=/path/to/dictionary (Specify a dictionary to use)
--b=EVNI,PBAE,IVEF,AUNL (Specify any input grid to solve)
--s=5 (Specify the size of a grid to generate randomly and solve)
 
+    -d=/path/to/dictionary (Specify a dictionary to use)
+    -b=EVNI,PBAE,IVEF,AUNL (Specify any input grid to solve)
+    -s=5 (Specify the size of a grid to generate randomly and solve)
     ./run.sh --s=5 --multi --d=/usr/share/dict/words
     ./run.sh --multi -b=EVNI,PBAE,IVEF,AUNL
     
