@@ -53,6 +53,11 @@ public class GridBoard {
         int i, j;
         for (i = 0; i < size; i++) {
             for (j = 0; j < size; j++) {
+                if (dice[i][j] == 'Q') {
+                    // If we encounter a Q face, we also need to add 
+                    // U, since Q is actually Qu.
+                    output.add('U');
+                }
                 output.add(dice[i][j]);
             }
         }

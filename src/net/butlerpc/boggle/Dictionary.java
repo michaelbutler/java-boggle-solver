@@ -12,6 +12,8 @@ public class Dictionary {
         dict = new HashMap<>(3000);
     }
 
+    // Run through all words in dictionary and build a map indexed by the first 3 characters of 
+    // each word. Will skip words too short or that have missing letters in the boggle board
     public void mapWords(Scanner sc, GridBoard board) {
         String word, prefix;
         Set<Character> boggleCharSet = board.getLettersAsSet();
@@ -25,6 +27,8 @@ public class Dictionary {
 
             prefix = prefix(word);
             if (!boggleCharSet.containsAll(chars(word))) {
+                // Skip this word because it couldn't possible exist anywhere on the board
+                // due to missing letter(s)
                 continue;
             }
             if (!dict.containsKey(prefix)) {
