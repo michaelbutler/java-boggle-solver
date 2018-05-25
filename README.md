@@ -5,21 +5,36 @@ Boggle solver written in Java.
 
 It takes a boggle grid as input in the format EVNI,PBAE,IVEF,AUNL or generates a real boggle grid at random if input is not provided.
 
-Supports parallel processing to split up the searching tasks. Filters the dictionary prior to searching by using the available letters on the boggle grid. The included dictionary is used as default, but you can provide the path to your own dictionary as a second command line argument. 
+Supports parallel processing to split up the searching tasks. Filters the dictionary prior to searching by using the available letters on the boggle grid. The included dictionary is used as default, but you can provide the path to your own dictionary as a second command line argument.
 
-Example Usage:
+Installation
+==================
+
+## Prerequisites:
+
+- These must be available in your $PATH:
+  - java
+  - mvn (maven)
+
+## Setup
+
+- Simply run `./build.sh` and the dependencies will be installed and the java source compiled.
+- Then you can use `./run.sh` to run the program, optionally with arguments defined below.
+
+Usage:
 --------------
 Parameters:
 
     -d=/path/to/dictionary (Specify a dictionary to use)
     -b=EVNI,PBAE,IVEF,AUNL (Specify any input grid to solve)
     -s=5 (Specify the size of a grid to generate randomly and solve)
+    --multi (Use multiple CPUs in parallel)
     ./run.sh --s=5 --multi --d=/usr/share/dict/words
     ./run.sh --multi -b=EVNI,PBAE,IVEF,AUNL
     
 Example Output:
 ---------------
-    ./run.sh -b=EVNIA,PBAEB,IVEFC,AUNLJ,CEOLS
+    ./run.sh --multi -b=EVNIA,PBAEB,IVEFC,AUNLJ,CEOLS
     Removed 171781 words from dictionary. Remaining: 6910
     Filtered dictionary words in 0.079s
     Num Processors: 4

@@ -28,7 +28,7 @@ public class Solver {
         Options options = new Options();
         options.addOption("s", true, "Set the grid size (NxN) of the Boggle board");
         options.addOption("d", true, "Path to dictionary file");
-        options.addOption("b", true, "Board layout to solve [abcd,efgh,ijkl,mnyz]");
+        options.addOption("b", true, "Board layout to solve, comma separated rows: \"abcd,efgh,ijkl,mnyz\"");
         options.addOption("multi", false, "Use parallel processing (multiple CPUs)");
         CommandLineParser parser = new GnuParser();
         try {
